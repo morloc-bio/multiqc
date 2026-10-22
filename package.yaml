@@ -1,0 +1,13 @@
+name: multiqc
+version: 0.1.0
+homepage: null
+synopsis: Run MultiQC over tool reports
+description: Runs MultiQC 1.35 over directories of reports written by biolib modules.
+category: bioinformatics
+license: MIT
+author: "Zebulun Arendsee"
+maintainer: "z@morloc.io"
+github: null
+bug-reports: null
+py-deps:
+  multiqc: { version: "==1.35", channel: "bioconda" }

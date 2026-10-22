@@ -1,0 +1,33 @@
+--' The multiqc test suite
+module multiqc.test (test)
+
+import root
+import root-py
+import multiqc
+import unittest
+
+source Py from "multiqc-test.py"
+  ( "tmp_dir" as tmpDir
+  , "write_text" as writeText
+  , "check_report" as checkReport
+  )
+
+tmpDir :: <IO> Str
+writeText :: Str -> Str -> <IO> ()
+checkReport :: Str -> Str -> <IO> Str
+
+meta :: Str
+meta =
+  "{\"salmon_version\": \"x\", \"library_types\": [\"ISR\"], "
+    <> "\"num_processed\": 10, \"num_mapped\": 8, \"percent_mapped\": 80.0}\n"
+
+testRun :: Results -> <IO> Results
+testRun s0 = do
+  d <- tmpDir
+  writeText (d <> "/in/S1/aux_info/meta_info.json") meta
+  multiqc "" "test" [d <> "/in"] (d <> "/out")
+  msg <- checkReport (d <> "/out") "S1"
+  testEqual "MultiQC reads a salmon meta_info.json" msg "" s0
+
+test :: <IO> Bool
+test = suiteE (groupE "MultiQC" testRun)

@@ -1,0 +1,27 @@
+--' MultiQC over directories of tool reports
+--'
+--' biolib modules write reports in the formats MultiQC reads natively
+--' (seqqc `fastqcData`, trim `trimGaloreJson`, quant
+--' `salmonMetaInfo`, `libFormatCounts`, `flenDistText`, deseq2's `_mqc.tsv`
+--' tables).
+module multiqc (multiqc)
+
+import root
+import root-py
+
+source Py from "multiqc.py" ("run_multiqc" as multiqc)
+
+--' Run MultiQC over directories of tool reports
+--'
+--' Writes `multiqc_report.html` and `multiqc_report_data/` into the output
+--' directory.
+multiqc ::
+  --' Config file; "" for none
+  Str ->
+  --' Report title; "" for none
+  Str ->
+  --' Directories of reports
+  [Str] ->
+  --' Output directory
+  Str ->
+  <IO> ()
